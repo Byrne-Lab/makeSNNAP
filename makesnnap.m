@@ -5,7 +5,7 @@ function makesnnap(OS,fname)
 % OS    = the operating system that will run the SNNAP simulation 'win' or 'mac'
 % fname = the path of the spreadsheet that contains the network
 % EXAMPLE:
-% makesnnap(win,'C:\Users\cneveu\Desktop\modeling\toy\11neuron.xlsx')
+% makesnnap('win','C:\Users\cneveu\Desktop\modeling\toy\11neuron.xlsx')
 
 if nargin<2
     [fnm,folder] = uigetfile('*.xlsx','Select Excel network file', 'MultiSelect', 'off');
@@ -47,22 +47,24 @@ fdir = dir(folder);
 for f=3:length(fdir)
     if fdir(f).isdir && ~strcmpi('ous',fdir(f).name)
         sf = fullfile(folder,fdir(f).name);
-        try
-            rmdir(sf)
-        catch
-            sfdir = dir(sf);
-            for s=3:length(sfdir)
-                delete(fullfile(sf,sfdir(s).name))
-            end
+        if ~contains(sf,'.git')
             try
                 rmdir(sf)
             catch
-                fclose all;
+                sfdir = dir(sf);
+                for s=3:length(sfdir)
+                    delete(fullfile(sf,sfdir(s).name))
+                end
                 try
                     rmdir(sf)
                 catch
-                    disp(['Could not remove directory: ' sf])
-                    disp('Try closing out SNNAP java program then reopen')
+                    fclose all;
+                    try
+                        rmdir(sf)
+                    catch
+                        disp(['Could not remove directory: ' sf])
+                        disp('Try closing out SNNAP java program then reopen')
+                    end
                 end
             end
         end
@@ -188,7 +190,8 @@ vdg = find(~ismissing(vdgn(1,:)) & vdgn(1,:)~='File');
 iidx = find(~ismissing(string(neu(irow,:))));
 ion = string(neu(irow+2:end,iidx(1)+1:iidx(2)-2));
 c2i = string(neu(irow+2:end,iidx(2)+1:iidx(3)-3));
-i2c = string(neu(irow+2:end,iidx(3)+1:end));
+i2c = string(neu(irow+2:end,iidx(3)+1:iidx(4)-2));
+vinit = string(neu(irow+2:end,iidx(4)+1));
 
 vfiles = fillmissing(vfiles,'previous',2);
 vfiles = join(vfiles,'.',1);
@@ -230,7 +233,7 @@ for n=1:nn
             tr = [];
         end
         
-        writeneu(OS,fullfile(fnname,[nname{n} '.neu']),-60,cm(n), vdgn(1,vdg(evdg(n,:))),...
+        writeneu(OS,fullfile(fnname,[nname{n} '.neu']),str2double(vinit{n}),cm(n), vdgn(1,vdg(evdg(n,:))),...
                   ion(n,1:3:lion),[c2i(n,1:2:lc2i)' c2i(n,2:2:lc2i)'],...
                   [i2c(n,1:7:li2c)'  i2c(n,2:7:li2c)'],[],[],tr);
         % make ion pool    
