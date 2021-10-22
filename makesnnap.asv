@@ -440,7 +440,7 @@ end
 %% write batch files
 
 ppnm = ["An","h","s","p",  "tmx","tmin","th1","ts1","tp1","th2","ts2","tp2"];
-ppidx =[ 0  , 1,  2 , 3 ,   0,     1   ,  2  ,  3  ,  4   , 5  ,  6  ,  7  ];
+ppidx =[ 0  , 1,  2 , 3 ,   0,     1   ,  2  ,  3  , 4   ,5
 
 bnms = find(cellfun(@(x) contains(x,'.bch'),sheets));
 for s=1:length(bnms)
