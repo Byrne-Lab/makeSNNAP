@@ -437,6 +437,7 @@ for s=1:length(sims)
     writetrt(fullfile(folder, 'trt', [simi{2,3} '.trt']),istim,vstim)
 end
 
+<<<<<<< Updated upstream
 %% write batch files
 
 ppnm = ["An","h","s","p",  "tmx","tmin","th1","ts1","tp1","th2","ts2","tp2"];
@@ -451,6 +452,24 @@ end
 
 
 %%
+=======
+%% write batch
+
+
+bchs = find(cellfun(@(x) contains(x,'.bch'),sheets));
+for s=1:length(bchs)
+    disp(['Making ' sheets{bchs(s)}])
+    [~,~,bcht] = xlsread(fname,sheets{bchs(s)});
+    ionc = find(string(bcht(:,1))=="Ion Channel Batch Parameters");
+    sync = find(string(bcht(:,1))=="Synapse Batch Parameters");
+    ionpn = bcht(ionc+2:sync-3,1:4);
+    idx = cellfun(@ischar,ionpn(:,1));
+    ionpn = ionpn(idx,:);
+    ionpp = bcht(ionc+2:sync-3,5:24);
+    idx2 = ~cellfun(@isnan,ionpp(1,:));
+    ionpp = double(string(ionpp(idx,idx2)));
+end
+>>>>>>> Stashed changes
 
 csgi = csg;
 csgi(cse<0) = csg(cse<0)*-1;

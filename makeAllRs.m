@@ -1,5 +1,7 @@
-function makeAllRs(amplitude,stepsize,jitter)
-mfolder = 'C:\Users\cneveu\Desktop\modeling\CPG_Yuto';
+function makeAllRs(amplitude,stepsize,jitter,mfolder)
+if nargin<4
+    mfolder = 'C:\Users\cneveu\Desktop\modeling\CPG_Yuto';
+end
 
 fdir = dir(mfolder);
 
