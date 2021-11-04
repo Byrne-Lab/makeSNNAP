@@ -437,23 +437,11 @@ for s=1:length(sims)
     writetrt(fullfile(folder, 'trt', [simi{2,3} '.trt']),istim,vstim)
 end
 
-<<<<<<< Updated upstream
+
 %% write batch files
 
 ppnm = ["An","h","s","p",  "tmx","tmin","th1","ts1","tp1","th2","ts2","tp2"];
 ppidx =[ 0  , 1,  2 , 3 ,   0,     1   ,  2  ,  3  ,  4   , 5  ,  6  ,  7  ];
-
-bnms = find(cellfun(@(x) contains(x,'.bch'),sheets));
-for s=1:length(bnms)
-    disp(['Making ' sheets{bnms(s)}])
-    [~,~,bchs] = xlsread(fname,sheets{bnms(s)});
-end
-
-
-
-%%
-=======
-%% write batch
 
 
 bchs = find(cellfun(@(x) contains(x,'.bch'),sheets));
@@ -469,7 +457,7 @@ for s=1:length(bchs)
     idx2 = ~cellfun(@isnan,ionpp(1,:));
     ionpp = double(string(ionpp(idx,idx2)));
 end
->>>>>>> Stashed changes
+
 
 csgi = csg;
 csgi(cse<0) = csg(cse<0)*-1;
