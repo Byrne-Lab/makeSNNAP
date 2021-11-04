@@ -9,6 +9,10 @@ function makesnnap(OS,fname)
 
 if nargin<2
     [fnm,folder] = uigetfile('*.xlsx','Select Excel network file', 'MultiSelect', 'off');
+    if ~ischar(fnm)
+        disp('Must select file or provide file name')
+        return
+    end
     fname = fullfile(folder,fnm);
     [~,fnm,~] = fileparts(fnm);
 else
@@ -456,6 +460,10 @@ for s=1:length(bchs)
     ionpp = bcht(ionc+2:sync-3,5:24);
     idx2 = ~cellfun(@isnan,ionpp(1,:));
     ionpp = double(string(ionpp(idx,idx2)));
+    ionps = join([repmat({'..'},size(ionpn,1),1), ionpn(:,1:2)],'/');
+    ionps = string(join([ionps,ionpn(:,3)],'.')'); % name of the file containing parameters
+    idxp = ppidx(cellfun(@(x) find(ppnm==x),ionpn(:,4)));% index of the parameters
+    writebatch(fullfile(folder,'smu',sheets{bchs(s)}),ionps, idxp , ionpp')
 end
 
 

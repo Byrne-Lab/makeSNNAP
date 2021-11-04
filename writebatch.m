@@ -1,8 +1,10 @@
-function writebatch(fname,parList,paridx,values)
+function writebatch(fname,parList,keyword,paridx,values)
 % This function writes a batch file for snnap
 %
 % INPUT:
 % parList = character or string array of the file contianing the parameter to be modified
+% keyword = the part of the equation including the parameter. Must be same length as parList, options:
+%           Ivd, Ics, Ies, ssA,tA, ssB, tB 
 % paridx  = the parameter index of the file. Either scalar or vector corresponding to parList 
 %           Note: some files may not have R file as paremeter so I think
 %           the index should be changed accordingly.
@@ -47,14 +49,13 @@ elseif size(values,1)==1 && size(values,2)>1
     values = values(:);% compress to the 1st dimension if vector along the 2nd
 end
 
-keyops = [".vdg", ".cs", ".es" ;...
-          "Ivd" ,  "Ics", "Ies"];
+fext = [".vdg", ".cs", ".es" ,".A",".B"];
 for C = 1:length(parList)
-    keyidx = contains(keyops(1,:),regexp(parList{C},'[.]\w+','match'));
+    keyidx = contains(fext(1,:),regexp(parList{C},'[.]\w+','match'));
     if ~any(keyidx)
         error(['parList(' num2str(C) ') has an invalid or nonexistent file extension'])
     end
-    key = keyops{2,keyidx};
+%     key = keyops{2,keyidx};
     itr = 0;
     parCount = 0;
     
@@ -65,7 +66,7 @@ for C = 1:length(parList)
                 '>----------------------->------------------------------->' newline...
                 '	FMU		>  File type is formula		>' newline...
                 '>----------------------->------------------------------->' newline...
-                '	' key ':		> keyword in formula file	>' newline...
+                '	' keyword{C} ':		> keyword in formula file	>' newline...
                 '	' num2str(paridx(C)) '		> which parameter under keyword	>' newline...
                 '>----------------------->------------------------------->' newline...
                 '	0		>	Manual=0, Auto=1	>' newline...
