@@ -25,7 +25,9 @@ function writebatch(fname,parList,keyword,paridx,values)
 % EXAMPLES:
 % writebatch('C:\Users\cneveu\Documents\MATLAB\makeSNNAP\test.bch','../B51/B51a_Na.vdg',3,1:3)
 % writebatch('C:\Users\cneveu\Documents\MATLAB\makeSNNAP\test.bch',["../B51/B51a_Na.vdg","../cs/B4_2_B51s_f_inh.cs"],[3 2],{1:3,0.5:0.125:1})
-
+% idx for these parameters
+% ppnm = ["An","h","s","p",  "tmx","tmin","th1","ts1","tp1","th2","ts2","tp2"];
+% ppidx =[ 0  , 1,  2 , 3 ,   0,     1   ,  2  ,  3  ,  4   , 5  ,  6  ,  7  ];
 
 
 if ~strcmp(fname(end-3:end),'.bch') && ~contains(fname,'.')

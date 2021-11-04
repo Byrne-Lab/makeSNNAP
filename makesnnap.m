@@ -444,9 +444,11 @@ end
 
 %% write batch files
 
-ppnm = ["An","h","s","p",  "tmx","tmin","th1","ts1","tp1","th2","ts2","tp2"];
-ppidx =[ 0  , 1,  2 , 3 ,   0,     1   ,  2  ,  3  ,  4   , 5  ,  6  ,  7  ];
-
+pnmpart = ["h","s","p",  "tmx","tmin","th1","ts1","tp1","th2","ts2","tp2"];
+ppnm = { ["g","E"] , ["An", pnmpart], ["Bn", pnmpart]};
+ppidx ={[0,1], [0:3,0,1:7], [0:3,0,1:7]};
+eq = ["vdg","A","B"];
+tst = ["ss","t"];
 
 bchs = find(cellfun(@(x) contains(x,'.bch'),sheets));
 for s=1:length(bchs)
@@ -460,10 +462,29 @@ for s=1:length(bchs)
     ionpp = bcht(ionc+2:sync-3,5:24);
     idx2 = ~cellfun(@isnan,ionpp(1,:));
     ionpp = double(string(ionpp(idx,idx2)));
-    ionps = join([repmat({'..'},size(ionpn,1),1), ionpn(:,1:2)],'/');
+    ionps = join([repmat({'..'},size(ionpn,1),1), ionpn(:,1), join(ionpn(:,1:2),'_')],'/');
     ionps = string(join([ionps,ionpn(:,3)],'.')'); % name of the file containing parameters
-    idxp = ppidx(cellfun(@(x) find(ppnm==x),ionpn(:,4)));% index of the parameters
-    writebatch(fullfile(folder,'smu',sheets{bchs(s)}),ionps, idxp , ionpp')
+%     try
+%         idxp = ppidx(cellfun(@(x) find(ppnm==x),ionpn(:,4)));% index of the parameters
+%     catch
+%         error(['One of the Params in ' sheets{bchs(s)} ' is not contained within the specified equation'])
+%     end
+    kw = strings(size(ionpn,1),1);
+    idxp = nan(size(kw));
+    for k=1:length(kw)
+        ki = eq==ionpn{k,3};
+        try
+            idxp(k) = ppidx{ki}( ppnm{ki}==ionpn(k,4));% index of the parameters
+        catch
+            error(['One of the Params in ' sheets{bchs(s)} ' is not contained within the specified equation'])
+        end
+        ist = ionpn{s,4}(1)=='t';
+        kw{k} = [tst{ist+1}, eq{ki}];
+        if find(ki)==1
+            kw{k} = 'Ivd';
+        end
+    end
+    writebatch(fullfile(folder,'smu',sheets{bchs(s)}),ionps, kw, idxp , ionpp')
 end
 
 
