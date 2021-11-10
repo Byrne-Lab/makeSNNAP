@@ -464,11 +464,6 @@ for s=1:length(bchs)
     ionpp = double(string(ionpp(idx,idx2)));
     ionps = join([repmat({'..'},size(ionpn,1),1), ionpn(:,1), join(ionpn(:,1:2),'_')],'/');
     ionps = string(join([ionps,ionpn(:,3)],'.')'); % name of the file containing parameters
-%     try
-%         idxp = ppidx(cellfun(@(x) find(ppnm==x),ionpn(:,4)));% index of the parameters
-%     catch
-%         error(['One of the Params in ' sheets{bchs(s)} ' is not contained within the specified equation'])
-%     end
     kw = strings(size(ionpn,1),1);
     idxp = nan(size(kw));
     for k=1:length(kw)
@@ -476,7 +471,7 @@ for s=1:length(bchs)
         try
             idxp(k) = ppidx{ki}( ppnm{ki}==ionpn(k,4));% index of the parameters
         catch
-            error(['One of the Params in ' sheets{bchs(s)} ' is not contained within the specified equation'])
+            error(sprintf('%s is not contained within %s of channel %s in neuron %s', ionpn(k,[4 3 2 1]))
         end
         ist = ionpn{s,4}(1)=='t';
         kw{k} = [tst{ist+1}, eq{ki}];
