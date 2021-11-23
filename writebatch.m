@@ -4,7 +4,8 @@ function writebatch(fname,parList,keyword,paridx,values)
 % INPUT:
 % parList = character or string array of the file contianing the parameter to be modified
 % keyword = the part of the equation including the parameter. Must be same length as parList, options:
-%           Ivd, Ics, Ies, ssA,tA, ssB, tB 
+%           Ivd, Ics, Ies, ssA,tA, ssB, tB use empty strings as
+%           placeholders for treatment files.
 % paridx  = the parameter index of the file. Either scalar or vector corresponding to parList 
 %           Note: some files may not have R file as paremeter so I think
 %           the index should be changed accordingly.
@@ -17,6 +18,12 @@ function writebatch(fname,parList,keyword,paridx,values)
 %                      1 = float           , E reversal potential
 %               es    :0 = float           , g1 post -> pre
 %                      1 = float           , g2 pre -> post
+%           if writing a batch file for treatmens, the paridx should be 3xN
+%           matrix.  The first row is type of treamtent 0 = current
+%           injection, 1 = modulatory tr, 2 = vclamp, 3 = current clamp.
+%           2nd row is which injection in the treatment file (e.g., 1st,
+%           2nd, 3rd).  Third row is whether to modify the start=0, stop=1,
+%           magnitude=2.  
 % values  = vector, 2d array with nan placeholders or cell array, each row idicates iteration, each column
 %           coresponds to parameter.  For cell array, each cell corresponds
 %           to each parameter.  Trailing nan placeholders are not necessary for cell
@@ -51,7 +58,7 @@ elseif size(values,1)==1 && size(values,2)>1
     values = values(:);% compress to the 1st dimension if vector along the 2nd
 end
 
-fext = [".vdg", ".cs", ".es" ,".A",".B"];
+fext = [".vdg", ".cs", ".es" ,".A",".B",".trt"];
 for C = 1:length(parList)
     keyidx = contains(fext(1,:),regexp(parList{C},'[.]\w+','match'));
     if ~any(keyidx)
@@ -65,12 +72,24 @@ for C = 1:length(parList)
                '	PARAMETER:	>	One Parameter		>' newline];
     str = [str '>----------------------->------------------------------->' newline...
         parList{C} '	>  File containing the param	>' newline...
+                '>----------------------->------------------------------->' newline];
+            
+            
+    if contains(parList{C},'.trt')
+    str = [str                  '	TRT		>  File type is treatment		>' newline...
                 '>----------------------->------------------------------->' newline...
-                '	FMU		>  File type is formula		>' newline...
+                '	' num2str(paridx(1,C)) ':		> cinj=0,minj=1,vclmp=2,iclmp=3	>' newline...
+                '	' num2str(paridx(2,C)) '		> which inject start from 0	>' newline...
+                '	' num2str(paridx(3,C)) '		> start=0, stop=1, magn=2	>' newline];
+    else
+    str = [str                  '	FMU		>  File type is formula		>' newline...
                 '>----------------------->------------------------------->' newline...
-                '	' keyword{C} ':		> keyword in formula file	>' newline...
-                '	' num2str(paridx(C)) '		> which parameter under keyword	>' newline...
-                '>----------------------->------------------------------->' newline...
+                '	' keyword{1,C} ':		> keyword in formula file	>' newline...
+                '	' num2str(paridx(1,C)) '		> which parameter under keyword	>' newline];
+    end
+    
+    
+    str = [str  '>----------------------->------------------------------->' newline...
                 '	0		>	Manual=0, Auto=1	>' newline...
                 '>----------------------->------------------------------->' newline...
                 '	PARNUMREPLACE		>   number of parameter values	>' newline];
