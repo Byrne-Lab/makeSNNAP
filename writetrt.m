@@ -42,6 +42,10 @@ tvend = '        %.3f           >       Stop clamping           >\n';
 mag  =  '        %.3f           >       Magnitude               >\n';
 sec  =  '        END             >                              >\n';
 
+if nargin<3
+    vstim = [];
+end
+
 
 txt = [head,sbr,curt];
 

@@ -13,13 +13,7 @@ function writeous(filenm,vgraph,vout)
 % vout   = names of the variables to be saved to file. Time is automatically included.  
 % 
 %
-% EXAMPLE:
-% Below creates a series of 200ms pulses to measure excitability in B51s.
-% istim = [repelem("B51s",5)', string([(1:5)', (1:5)'+0.2, (1:5)'])];
-% writetrt('C:\Users\cneveu\Desktop\DI_cpg\trt\B51exc.trt',istim,[])
 
-% personal notes
-% folder = 'C:\Users\cneveu\Desktop\modeling\DI_cpg\trt\';
 
 
 
