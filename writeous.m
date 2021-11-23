@@ -6,8 +6,8 @@ function writeous(filenm,vgraph,vout)
 % vgraph = the parameters for the graph as a string array.  Each row is a 
 %          graph.  Additional variables to be plotted on the same graph
 %          should be added along the 2nd dimension.
-%                 X axis                     Y-axis #1->
-%          [gain, #Xticks, minX, maxX, color, var name, #Yticks, minY,
+%                 X axis                                 Y-axis #1->
+%          [gain, time<{ivr}, #Xticks, minX, maxX, color, var name, #Yticks, minY,
 %                        Y-axis #2
 %          maxY, color,  var name, #Yticks, minY,maxY, color]
 % vout   = names of the variables to be saved to file. Time is automatically included.  
@@ -82,7 +82,7 @@ vgraph = vgraph';
 for g=1:size(vgraph,2)
     nv = sum(vgraph(:,g)~='');
     gsec =     [gax, gain, tln, ntick, minx, maxx, gclr, ...
-        repmat([name,ntick,minv,maxv,gclr],1,(nv-1)/5 - 1)];
+        repmat([name,ntick,minv,maxv,gclr],1,(nv-1)/5 - 1)];%nv/5-1
     txt = [txt,gsec]; %#ok<AGROW>
 end
 txt = [txt,endg,'\n'];
