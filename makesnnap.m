@@ -471,7 +471,7 @@ for s=1:length(bchs)
         try
             idxp(k) = ppidx{ki}( ppnm{ki}==ionpn(k,4));% index of the parameters
         catch
-            error(sprintf('%s is not contained within %s of channel %s in neuron %s', ionpn(k,[4 3 2 1]))
+            error(sprintf('%s is not contained within %s of channel %s in neuron %s', ionpn(k,[4 3 2 1])))
         end
         ist = ionpn{s,4}(1)=='t';
         kw{k} = [tst{ist+1}, eq{ki}];
@@ -479,7 +479,7 @@ for s=1:length(bchs)
             kw{k} = 'Ivd';
         end
     end
-    writebatch(fullfile(folder,'smu',sheets{bchs(s)}),ionps, kw, idxp , ionpp')
+%     writebatch(fullfile(folder,'smu',sheets{bchs(s)}),ionps, kw, idxp , ionpp')
 end
 
 
