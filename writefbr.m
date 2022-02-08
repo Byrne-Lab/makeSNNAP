@@ -6,11 +6,12 @@ function writefbr(filenm,opt1,opt2,param,beta)
 % opt1   = 1:    fBR = BR 
 %          2:    fBR = 1 + BR, 
 %          3:    fBR = 1/(1 + beta*BR)
-% opt2   = 1: dBR/dt = (ion - BR)/param(1)
+% opt2   = 1: dBR/dt = (ion - BR)/param(1)   initial value = param(2)
 %          2:     BR = ion/(param(1) + ion)
 %          3:     BR = ion/(param(1) + ion) + 1
 %          4:     BR = 1/(1 + param(1)*ion)
 %          5:     BR = exp((param(1) + ion)/param(2))
+% param  = input parameters for opt2
 % beta   = only needed for opt1==3
 %
 % EXAMPLE:
@@ -32,7 +33,14 @@ if opt2==5
     if sum(~isnan(param))==2 
         txt = replace(txt,'UU',num2str(param(2)));
     else
-        error('Param needs to have length of 2 if opt2==5')
+        error(['In creating ', filenm , ', param needs to have length of 2 if opt2==5'])
+    end
+elseif opt2==1
+    if sum(~isnan(param))==2
+       txt = replace(txt,'CC',num2str(param(2)));
+    else
+       txt = replace(txt,'CC','0');
+       warning(['In creating ', filenm , ', Initial value not given. iC set to 0.'])
     end
 end
 
