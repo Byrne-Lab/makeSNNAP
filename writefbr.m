@@ -40,7 +40,7 @@ elseif opt2==1
        txt = replace(txt,'CC',num2str(param(2)));
     else
        txt = replace(txt,'CC','0');
-       warning(['In creating ', filenm , ', Initial value not given. iC set to 0.'])
+       disp(['In creating ', filenm , ', Initial value not given. iC set to 0.'])
     end
 end
 
