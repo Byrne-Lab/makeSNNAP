@@ -16,16 +16,19 @@ if nargin<4
     jitter = 10;
 end
 
+
 files = dir(folder);
-dest = [fileparts(folder),'\R\'];
+
+dest = fullfile(fileparts(folder),'R');
 crope = [3,2,2];
 for f=1:length(files)
     step = round(stepsize*(1+randn(1)/100*jitter));
     ft = [contains(files(f).name,'vdg'), contains(files(f).name,'.es'), contains(files(f).name,'.cs')];
+    
     if contains(files(f).name,'vdg') || contains(files(f).name,'.es') || contains(files(f).name,'.cs')
         if displayo; disp(files(f).name);end
-        writeR([dest, files(f).name(1:end-crope(ft)),'R'],amplitude,step)
-        fnm = [files(f).folder,'\',files(f).name];
+        writeR(fullfile(dest, [files(f).name(1:end-crope(ft)),'R']),amplitude,step)
+        fnm = fullfile(files(f).folder,files(f).name);
         txt = fileread(fnm);
 %         txt = replace(txt,'/R/R_VDG',['/R/' files(f).name(1:end-crope(ft)-1)]);
 %         txt = replace(txt,'/R/R_CS',['/R/' files(f).name(1:end-crope(ft)-1)]);

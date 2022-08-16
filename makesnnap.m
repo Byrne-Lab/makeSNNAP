@@ -378,7 +378,7 @@ files = dir(folder);
 
 regex = join(['(' join(nname','|') ')'],'');
 for f=1:length(files)
-    fn = [files(f).folder '\' files(f).name];
+    fn = fullfile(files(f).folder, files(f).name);
     if files(f).isdir && ~isempty(regexp(files(f).name,regex,'once'))
         disp(['Making Rs for ' files(f).name])
         makeRs(fn,noise(1,1),noise(1,2),noise(1,3),false) 
