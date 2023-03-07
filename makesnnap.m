@@ -16,6 +16,10 @@ if nargin<2
     fname = fullfile(folder,fnm);
     [~,fnm,~] = fileparts(fnm);
 else
+    if isstring(fname)
+        fname = fname{1};
+    end
+
     [folder,fnm] = fileparts(fname);
 end
 
