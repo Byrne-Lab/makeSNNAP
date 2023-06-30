@@ -55,7 +55,7 @@ fdir = dir(folder);
 for f=3:length(fdir)
     if fdir(f).isdir && ~strcmpi('ous',fdir(f).name)
         sf = fullfile(folder,fdir(f).name);
-        if ~contains(sf,'.git')
+        if ~contains(sf,'.git') && fdir(f).name(1)~='_'
             try
                 rmdir(sf)
             catch
@@ -241,9 +241,13 @@ for n=1:nn
             tr = [];
         end
         
-        writeneu(OS,fullfile(fnname,[nname{n} '.neu']),str2double(vinit{n}),cm(n), vdgn(1,vdg(evdg(n,:))),...
-                  ion(n,1:3:lion),[c2i(n,1:2:lc2i)' c2i(n,2:2:lc2i)'],...
-                  [i2c(n,1:7:li2c)'  i2c(n,2:7:li2c)'],[],[],tr);
+        if ismissing(vinit(n))
+            error('One of the neurons does not have an initial voltage specified')
+        else
+            writeneu(OS,fullfile(fnname,[nname{n} '.neu']),str2double(vinit{n}),cm(n), vdgn(1,vdg(evdg(n,:))),...
+                      ion(n,1:3:lion),[c2i(n,1:2:lc2i)' c2i(n,2:2:lc2i)'],...
+                      [i2c(n,1:7:li2c)'  i2c(n,2:7:li2c)'],[],[],tr);
+        end
         % make ion pool    
         for i=1:3:lion
             txt = fileread(fullfile(loc,'template.ion'));
