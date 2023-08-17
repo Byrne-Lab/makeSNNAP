@@ -2,6 +2,7 @@ function writebatch(fname,parList,keyword,paridx,values)
 % This function writes a batch file for snnap
 %
 % INPUT:
+% fname = name of the batch file you are creating.
 % parList = character or string array of the file contianing the parameter to be modified
 % keyword = the part of the equation including the parameter. Must be same length as parList, options:
 %           Ivd, Ics, Ies, ssA,tA, ssB, tB use empty strings as
