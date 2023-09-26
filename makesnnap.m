@@ -51,40 +51,7 @@ end
 
 ftinfo = tinfo;
 
-fdir = dir(folder);
-for f=3:length(fdir)
-    if fdir(f).isdir && ~strcmpi('ous',fdir(f).name)
-        sf = fullfile(folder,fdir(f).name);
-        if ~contains(sf,'.git') && fdir(f).name(1)~='_'
-            try
-                rmdir(sf)
-            catch
-                sfdir = dir(sf);
-                for s=3:length(sfdir)
-                    delete(fullfile(sf,sfdir(s).name))
-                end
-                try
-                    rmdir(sf)
-                catch
-                    fclose all;
-                    try
-                        rmdir(sf)
-                    catch
-                        disp(['Could not remove directory: ' sf])
-                        disp('Try closing out SNNAP java program then reopen')
-                    end
-                end
-            end
-        end
-    elseif fdir(f).isdir && strcmpi('ous',fdir(f).name)
-        sdir = dir(fullfile(folder,fdir(f).name));
-        for s=3:length(sdir)
-            if contains(sdir(s).name,'.mne')
-                delete(fullfile(sdir(s).folder,sdir(s).name))
-            end
-        end
-    end
-end
+deletefiles(folder,folder)% clear previous snnap files and folders
 
 
 
@@ -496,7 +463,43 @@ csgi(cse<0) = csg(cse<0)*-1;
 
 save(fullfile(folder,replace(fnm,'.xlsx','')),'csg','cse','esg','cst','csp','csgi','param','cm','ion','i2c','c2i','ftinfo')   
 
-% neuron_model;
+
+function deletefiles(pstring,main,exclude)
+% delete files and directories except the main directory, excluded files
+%  or files starting with "_" .
+% INPUT:
+% pstring = the file or folder intended to be deleted
+% main    = the main folder for the snnap files (will not be deleted or any
+%           files, but will delete the folders)
+% exclude = array of strings, exclude files or folders with this name
+
+if nargin<3
+    exclude = "";
+end
+
+[path, file, ext] = fileparts(pstring);
+chk_exclude = ~any(cellfun(@(x) strcmp(file,x),exclude));
+if ~isempty(file) && file(1)~='_' && file(1)~='.' && ~contains(pstring,'.git') && ~contains(file,'NRNModel') && chk_exclude
+    if isfolder(pstring)
+        fdir = dir(pstring);
+        if length(fdir)<3
+            rmdir(pstring)
+        else
+            for f=1:length(fdir)
+                deletefiles(fullfile(pstring,fdir(f).name),main,exclude)
+            end
+        end
+    else
+        if ~strcmp(fileparts(pstring),main) % so it doesn't delete any files in the home directory
+            delete(pstring)
+            fdir = dir(fileparts(pstring));
+            if length(fdir)<3
+                rmdir(fileparts(pstring))
+            end
+        end
+    end
+end
+
 
 
 
