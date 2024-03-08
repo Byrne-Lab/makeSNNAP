@@ -23,6 +23,10 @@ else
     [folder,fnm] = fileparts(fname);
 end
 
+if isstring(fnm)
+    fnm = fnm{1};
+end
+
 loc = fileparts(which('makesnnap')); % location of the makesnnap function
 
 comp = '';
@@ -35,21 +39,21 @@ if strcmpi(OS,'win')
 end
 
 
-tinfo = dir(fname);
-if exist(fullfile(folder,[fnm '.mat']),'file')
-    load(fullfile(folder,[fnm '.mat']),'ftinfo')
-    
-%     if (datetime(tinfo.date) - datetime(ftinfo.date))==0
-%         fprintf('\n\tSNNAP files already include most recent modifications to excel spreadsheet.\n')
-%         fprintf('\tConfirm spreadsheet is saved\n\n')
-%         out = input('Continue(y/n)?','s');
-%         if strcmpi(out,'n')            
-%             return
-%         end
-%     end
-end
-
-ftinfo = tinfo;
+% tinfo = dir(fname);
+% if exist(fullfile(folder,[fnm '.mat']),'file')
+%     load(fullfile(folder,[fnm '.mat']),'ftinfo')
+%     
+% %     if (datetime(tinfo.date) - datetime(ftinfo.date))==0
+% %         fprintf('\n\tSNNAP files already include most recent modifications to excel spreadsheet.\n')
+% %         fprintf('\tConfirm spreadsheet is saved\n\n')
+% %         out = input('Continue(y/n)?','s');
+% %         if strcmpi(out,'n')            
+% %             return
+% %         end
+% %     end
+% end
+% 
+% ftinfo = tinfo;
 
 deletefiles(folder,folder)% clear previous snnap files and folders
 
