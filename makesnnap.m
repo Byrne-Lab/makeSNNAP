@@ -39,7 +39,7 @@ if strcmpi(OS,'win')
 end
 
 
-% tinfo = dir(fname);
+tinfo = dir(fname);
 % if exist(fullfile(folder,[fnm '.mat']),'file')
 %     load(fullfile(folder,[fnm '.mat']),'ftinfo')
 %     
@@ -53,7 +53,7 @@ end
 % %     end
 % end
 % 
-% ftinfo = tinfo;
+ftinfo = tinfo;
 
 deletefiles(folder,folder)% clear previous snnap files and folders
 
