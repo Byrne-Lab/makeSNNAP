@@ -175,6 +175,21 @@ vinit = string(neu(irow+2:end,iidx(4)+1));
 vfiles = fillmissing(vfiles,'previous',2);
 vfiles = join(vfiles,'.',1);
 vfiles = vfiles(5:end);
+val = cellfun(@(x) isstring(x)|ischar(x),neu([false;idx],5:end));
+vdgnm = repelem(vdgn(1,vdg),[diff(vdg), diff(vdg(end-1:end))]);
+paramn = string(neu(3,5:end));
+if any(val,'all')
+	yi = find(any(val,2));
+	xi = find(any(val,1));
+	for i=yi
+		for j=xi
+			if val(i,j)
+				disp(['Error: String value for neuron ' nname{i} ' conductance ' vdgnm{j} ' param ' paramn{j}])
+			end
+		end
+	end
+	error('Incorrect value format, see above.')
+end
 param = cell2mat(neu([false;idx],5:end));
 evdg = ~isnan(param(:,vdg));
 pnm = string(neu(3,5:end));
@@ -319,7 +334,11 @@ for p=1:nn
             if ~isnan(csg(p,o,i))
                 iff = csp(cst(p,o,i),1)>0.1;
                 exc = cse(p,o,i)<-60;
-                name = [nname{p} '_2_' nname{o} '_' tms(iff+1) '_' ems{exc+1} ];
+				if i==2 && strcmp(name,[nname{p} '_2_' nname{o} '_' tms(iff+1) '_' ems{exc+1} ])
+					name = [nname{p} '_2_' nname{o} '_' tms(iff+1) '_' ems{exc+1} '2'];
+				else
+					name = [nname{p} '_2_' nname{o} '_' tms(iff+1) '_' ems{exc+1} ];
+				end
                 us = csp(cst(p,o,i),1:2);
                 A = csp(cst(p,o,i),5:8);
                 writefat(OS,fullfile(folder, 'cs',name),us(~isnan(us)),'',any(~isnan(A)))

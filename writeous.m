@@ -46,7 +46,7 @@ if exist([filenm '.mnu'],'file')
     mnutxt = fileread([filenm '.mnu']);
     mnu = true;
 else
-    disp('No mnu file found to verify variable existance.  Proceeding anyway.')
+    disp('No mnu file found to verify variable existence.  Proceeding anyway.')
     mnu = false;
 end
 
