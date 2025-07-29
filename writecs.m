@@ -37,7 +37,7 @@ tt2	 =  '>a     2                     >  G= (g+R) x fAvt           (1)          
 fl2  =  '>a  %-24s >fAvt<           >  time-dependent activation >\n';
 
 rfl  =  '>a  %-24s >R<             >  random fluctuations       >\n';
-gln  =  '>a  %.3f                     > g uS<         >                            >\n';
+gln  =  '>a  %.5f                     > g uS<         >                            >\n';
 eln  =  '>a  %2.0f                      > E mV<         >  Ics= G x (V -E)           >\n';
 
 comp = '';

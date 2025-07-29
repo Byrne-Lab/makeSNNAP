@@ -425,7 +425,10 @@ for s=1:length(sims)
         for o=1:length(vout)
             vout{o} = makevar(vout{o}); 
         end
-    end  
+	end  
+	vout = unique(vout);
+	vout = vout(~contains(vout,'time'));
+
     writeous(fullfile(folder, 'ous', [simi{2,3} '.ous']),vgraph,vout')
     
     [irow,icol] = find(contains(ssimi,'Current injection'));

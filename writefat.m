@@ -72,6 +72,10 @@ while 1==1
         end
     end
     cnt = cnt+1;
+% 	if contains(filenm,'B52') && contains(filenm,'B8')
+% 		keyboard
+% 	end
+
     
     fline = [fline ; string(tline)]; %#ok<AGROW>
 end
