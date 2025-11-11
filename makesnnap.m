@@ -480,7 +480,7 @@ for s=1:length(bchs)
             kw{k} = 'Ivd';
         end
     end
-%     writebatch(fullfile(folder,'smu',sheets{bchs(s)}),ionps, kw, idxp , ionpp')
+    writebatch(fullfile(folder,'smu',sheets{bchs(s)}),ionps, kw, idxp , ionpp')
 end
 
 
