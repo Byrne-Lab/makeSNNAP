@@ -509,7 +509,7 @@ if ~isempty(file) && file(1)~='_' && file(1)~='.' && ~contains(pstring,'.git') &
     if isfolder(pstring)
         fdir = dir(pstring);
         if length(fdir)<3
-            rmdir(pstring)
+            rmdir(pstring,'s')
         else
             for f=1:length(fdir)
                 deletefiles(fullfile(pstring,fdir(f).name),main,exclude)
@@ -520,7 +520,7 @@ if ~isempty(file) && file(1)~='_' && file(1)~='.' && ~contains(pstring,'.git') &
             delete(pstring)
             fdir = dir(fileparts(pstring));
             if length(fdir)<3
-                rmdir(fileparts(pstring))
+                rmdir(fileparts(pstring),'s')
             end
         end
     end
